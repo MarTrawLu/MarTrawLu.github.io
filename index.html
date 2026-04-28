@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarTraw — Trawy i drzewka ozdobne</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #eef4e6;
+    --surface: #ffffff;
+    --ink: #1a1a1a;
+    --muted: #6b7268;
+    --accent: #4a6b3a;
+    --accent-soft: #eaf0e3;
+    --line: #e8e8e3;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(160deg, #eef4e6 0%, #f7f5ee 55%, #eaf0e3 100%) fixed;
+    color: var(--ink);
+    line-height: 1.6;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    background: rgba(238, 244, 230, 0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--accent);
+    z-index: 100;
+  }
+
+  nav {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 20px;
+    border: 2px solid var(--accent);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    min-width: 120px;
+  }
+
+  .logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links li {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-links svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .nav-links a:hover svg {
+    opacity: 1;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 120px 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .hero-text h1 {
+    font-size: 64px;
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+
+  .hero-text h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .hero-text p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 32px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    padding-top: 32px;
+    border-top: 2px solid var(--accent-soft);
+  }
+
+  .hero-meta div { font-size: 14px; }
+  .hero-meta strong {
+    display: block;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .hero-meta span { color: var(--muted); }
+
+  .hero-visual {
+    aspect-ratio: 4/5;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #eaf0e3;
+  }
+
+  .hero-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* SECTION */
+  section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 40px;
+  }
+
+  .section-header {
+    margin-bottom: 64px;
+    max-width: 640px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .section-header h2 {
+    font-size: 44px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-icon {
+    width: 40px;
+    height: 40px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-soft) 100%);
+    border-radius: 2px;
+  }
+
+  /* Styl dla sekcji traw */
+  #trawy .section-header {
+    position: relative;
+  }
+
+  #trawy .section-header::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 80px;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M24%2C62 Q8%2C36 3%2C8 Q11%2C35 30%2C62Z' fill='%234a6b3a'/%3E%3Cpath d='M34%2C62 Q56%2C36 61%2C8 Q53%2C35 40%2C62Z' fill='%234a6b3a'/%3E%3Cpath d='M27%2C62 Q14%2C32 16%2C4 Q21%2C31 33%2C62Z' fill='%236b8f5a'/%3E%3Cpath d='M31%2C62 Q44%2C32 48%2C4 Q43%2C31 37%2C62Z' fill='%236b8f5a'/%3E%3Cpath d='M29%2C62 Q27%2C26 32%2C2 Q37%2C26 35%2C62Z' fill='%238fb68a'/%3E%3Cellipse cx='32' cy='63' rx='9' ry='2.5' fill='%233a5a2a'/%3E%3C/svg%3E") no-repeat;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* Styl dla sekcji drzewek */
+  #drzewka .section-header {
+    position: relative;
+  }
+
+  #drzewka .section-header::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 80px;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 60'%3E%3Crect x='22' y='44' width='8' height='14' rx='2' fill='%234a6b3a'/%3E%3Cpolygon points='26,4 8,28 44,28' fill='%234a6b3a'/%3E%3Cpolygon points='26,16 6,38 46,38' fill='%236b8f5a'/%3E%3Cpolygon points='26,26 8,46 44,46' fill='%238fb68a'/%3E%3Crect x='48' y='46' width='6' height='11' rx='2' fill='%234a6b3a'/%3E%3Cpolygon points='51,10 36,30 66,30' fill='%234a6b3a'/%3E%3Cpolygon points='51,20 35,38 67,38' fill='%236b8f5a'/%3E%3C/svg%3E") no-repeat;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .section-header p {
+    color: var(--muted);
+    font-size: 17px;
+  }
+
+  /* PRODUCTS GRID */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px 32px;
+  }
+
+  .product {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .product:hover { transform: translateY(-4px); }
+
+  .product-image {
+    aspect-ratio: 3/4;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+    background: #eaf0e3;
+  }
+
+  .product-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.5s ease, transform 0.6s ease;
+  }
+
+  .product:hover .product-image img {
+    transform: scale(1.04);
+  }
+
+  /* Drugie zdjęcie — domyślnie ukryte */
+  .product-image .img-alt { opacity: 0; }
+
+  /* Hover lub stan aktywny (tap na mobile) — pokaż drugie zdjęcie */
+  .product-image.has-secondary:hover .img-main,
+  .product-image.has-secondary.active .img-main { opacity: 0; }
+
+  .product-image.has-secondary:hover .img-alt,
+  .product-image.has-secondary.active .img-alt { opacity: 1; }
+
+  /* Znacznik "1 / 2" — widoczny tylko gdy istnieje drugie zdjęcie */
+  .img-badge {
+    display: none;
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    padding: 5px 11px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .product-image.has-secondary .img-badge { display: block; }
+  .product-image.has-secondary:hover .img-badge,
+  .product-image.has-secondary.active .img-badge { opacity: 0.6; }
+
+  .product-tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    font-weight: 500;
+    z-index: 2;
+  }
+
+  .product-category {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .product-name {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .product-latin {
+    font-style: italic;
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .product-desc {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.55;
+  }
+
+  .product-meta {
+    display: flex;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 2px dashed var(--accent-soft);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .product-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* DIVIDER SECTION */
+  .info-band {
+    background: var(--accent-soft);
+    padding: 80px 0;
+  }
+
+  .info-band-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+  }
+
+  .info-item h3 {
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .info-item p {
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  .info-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 20px;
+    color: var(--accent);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 2px solid var(--accent);
+    padding: 48px 40px;
+    margin-top: 40px;
+  }
+
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-inner p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding: 60px 24px; gap: 48px; }
+    .hero-text h1 { font-size: 44px; }
+    .products { grid-template-columns: repeat(2, 1fr); gap: 32px 20px; }
+    section { padding: 60px 24px; }
+    .info-band-inner { grid-template-columns: 1fr; padding: 0 24px; gap: 32px; }
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .section-header h2 { font-size: 32px; }
+    .hero-meta { flex-wrap: wrap; gap: 24px; }
+  }
+
+  @media (max-width: 540px) {
+    .products { grid-template-columns: 1fr; }
+  }
+</style>
+<script>
+  // Uniwersalny fallback dla zdjęć: .jpg/.jpeg → .jfif → .svg (lub usunięcie dla img-alt)
+  function imgFallback(img) {
+    var stage = parseInt(img.dataset.stage || '0', 10);
+    if (stage === 0) {
+      // Pierwszy fallback: spróbuj .jfif (Windows/Chrome czasem zapisuje JPG jako .jfif)
+      img.dataset.stage = '1';
+      img.src = img.src.replace(/\.(jpe?g)(\?.*)?$/i, '.jfif$2');
+      return;
+    }
+    // Drugi fallback: zatrzymaj próby
+    img.dataset.stage = '2';
+    img.onerror = null;
+    if (img.classList.contains('img-alt')) {
+      // Drugie zdjęcie nie istnieje — usuń element
+      img.remove();
+      return;
+    }
+    // Główne zdjęcie — pokaż placeholder SVG
+    img.src = img.src.replace(/\.jfif(\?.*)?$/i, '.svg$1');
+  }
+</script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="logo">
+      <span>Mar</span>Traw
+    </a>
+    <ul class="nav-links">
+      <li><a href="#trawy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2 L 8 10 L 12 8 L 16 10 Z"/>
+          <path d="M12 8 L 8 16 L 12 14 L 16 16 Z"/>
+          <path d="M12 14 L 8 22 L 12 20 L 16 22 Z"/>
+        </svg>
+        Trawy ozdobne</a></li>
+      <li><a href="#drzewka">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2 L 6 10 L 18 10 Z"/>
+          <rect x="10" y="10" width="4" height="12"/>
+          <circle cx="12" cy="18" r="2"/>
+        </svg>
+        Drzewka</a></li>
+      <li><a href="#info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 8 L 12 12"/>
+          <circle cx="12" cy="15" r="0.5"/>
+        </svg>
+        O nas</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <h1>Trawy i drzewka ozdobne hodowane z pasją.</h1>
+    <p>Starannie wyselekcjonowane rośliny dla wymagających ogrodników. Każdy okaz pielęgnowany od pierwszych dni — od sadzonki po dorodną roślinę gotową do Twojego ogrodu.</p>
+    <div class="hero-meta">
+      <div><strong>14</strong><span>gatunków</span></div>
+      <div><strong>8 lat</strong><span>doświadczenia</span></div>
+      <div><strong>100%</strong><span>polska hodowla</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <img src="images/hero.jpg" alt="Trawy ozdobne w ogrodzie" loading="eager"
+         onerror="imgFallback(this); void'images/hero.svg';">
+  </div>
+</div>
+
+<!-- TRAWY -->
+<section id="trawy">
+  <div class="section-header">
+    <div class="section-label">Kolekcja · 01</div>
+    <h2>
+      <img class="section-icon" src="images/grass-logo.svg" alt="Ikona traw ozdobnych" loading="lazy"
+           onerror="this.style.display='none';">
+      Trawy ozdobne
+    </h2>
+    <p>Lekkie, faliste i pełne ruchu. Idealne do nowoczesnych ogrodów, rabat preriowych i nasadzeń strukturalnych.</p>
+  </div>
+
+  <div class="products">
+
+    <article class="product">
+      <div class="product-image">
+        <span class="product-tag">Wieloletnia</span>
+        <img class="img-main" src="images/miskant-memory.jpg" alt="Miskant chiński 'Memory'" loading="lazy"
+             onerror="imgFallback(this); void'images/miskant-memory.svg';">
+        <img class="img-alt" src="images/miskant-memory-2.jpg" alt="Miskant 'Memory' w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Miscanthus</div>
+      <h3 class="product-name">Miskant chiński 'Memory'</h3>
+      <p class="product-latin">Miscanthus sinensis</p>
+      <p class="product-desc">Pionowy pokrój i biało-srebrzyste, lśniące kłosy. Bardzo trwałe — utrzymują pełną formę przez całą zimę.</p>
+      <div class="product-meta">
+        <span>↕ 180–220 cm</span>
+        <span>☀ słońce</span>
+        <span>Dostępne w doniczkach:🪴 5l, 3l</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <img class="img-main" src="images/miskant-malepartus.jpg" alt="Miskant chiński 'Malepartus'" loading="lazy"
+             onerror="imgFallback(this); void'images/miskant-malepartus.svg';">
+        <img class="img-alt" src="images/miskant-malepartus-2.jpg" alt="Miskant 'Malepartus' w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Miscanthus</div>
+      <h3 class="product-name">Miskant chiński 'Malepartus'</h3>
+      <p class="product-latin">Miscanthus sinensis</p>
+      <p class="product-desc">Bordowo-czerwone, łukowate kłosy stopniowo srebrnieją. Jeden z najwcześniej kwitnących miskantów — efektowny od końca lata.</p>
+      <div class="product-meta">
+        <span>↕ 180–220 cm</span>
+        <span>☀ słońce</span>
+        <span>Dostępne w doniczkach:🪴 5l, 3l</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <span class="product-tag">Bestseller</span>
+        <img class="img-main" src="images/rozplenica-hameln.jpg" alt="Rozplenica japońska 'Hameln'" loading="lazy"
+             onerror="imgFallback(this); void'images/rozplenica-hameln.svg';">
+        <img class="img-alt" src="images/rozplenica-hameln-2.jpg" alt="Rozplenica 'Hameln' w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Pennisetum</div>
+      <h3 class="product-name">Rozplenica japońska 'Hameln'</h3>
+      <p class="product-latin">Pennisetum alopecuroides</p>
+      <p class="product-desc">Puszyste, kremowo-różowe kłosy przypominające szczotki butelkowe. Niska, kopulasta forma.</p>
+      <div class="product-meta">
+        <span>↕ 60–90 cm</span>
+        <span>☀ słońce</span>
+        <span>Dostępne w doniczkach:🪴 5l, 3l</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <img class="img-main" src="images/miskant-zebrinus.jpg" alt="Miskant chiński 'Zebrinus'" loading="lazy"
+             onerror="imgFallback(this); void'images/miskant-zebrinus.svg';">
+        <img class="img-alt" src="images/miskant-zebrinus-2.jpg" alt="Miskant 'Zebrinus' w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Miscanthus</div>
+      <h3 class="product-name">Miskant chiński 'Zebrinus'</h3>
+      <p class="product-latin">Miscanthus sinensis</p>
+      <p class="product-desc">Charakterystyczne, poziome żółte pasy na zielonych liściach. „Trawa zebra" — nietypowy akcent w ogrodzie.</p>
+      <div class="product-meta">
+        <span>↕ 150–200 cm</span>
+        <span>☀ słońce</span>
+        <span>Dostępne w doniczkach:🪴 5l, 3l</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <img class="img-main" src="images/miskant-morning-light.jpg" alt="Miskant chiński 'Morning Light'" loading="lazy"
+             onerror="imgFallback(this); void'images/miskant-morning-light.svg';">
+        <img class="img-alt" src="images/miskant-morning-light-2.jpg" alt="Miskant 'Morning Light' w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Miscanthus</div>
+      <h3 class="product-name">Miskant chiński 'Morning Light'</h3>
+      <p class="product-latin">Miscanthus sinensis</p>
+      <p class="product-desc">Pierzaste, srebrzyste kłosy łukowato pochylone nad delikatnymi liśćmi. Lekka, eteryczna forma do rabat preriowych.</p>
+      <div class="product-meta">
+        <span>↕ 120–160 cm</span>
+        <span>☀ słońce</span>
+        <span>Dostępne w doniczkach:🪴 5l, 3l</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <span class="product-tag">Nowość</span>
+        <img class="img-main" src="images/pennisetum-black-beauty.jpg" alt="Rozplenica 'Black Beauty'" loading="lazy"
+             onerror="imgFallback(this); void'images/pennisetum-black-beauty.svg';">
+        <img class="img-alt" src="images/pennisetum-black-beauty-2.jpg" alt="Rozplenica 'Black Beauty' w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Pennisetum</div>
+      <h3 class="product-name">Rozplenica 'Black Beauty'</h3>
+      <p class="product-latin">Pennisetum alopecuroides</p>
+      <p class="product-desc">Spektakularne, ciemnopurpurowe — niemal czarne — kłosy nad ciemnozielonym kępkiem. Bardzo dramatyczny akcent.</p>
+      <div class="product-meta">
+        <span>↕ 80–120 cm</span>
+        <span>☀ słońce</span>
+        <span>Dostępne w doniczkach:🪴 5l, 3l</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <img class="img-main" src="images/miskant-chinski-puenktchen.jpg" alt="Miskant chiński 'Puenktchen'" loading="lazy"
+             onerror="imgFallback(this); void'images/miskant-chinski-puenktchen.svg';">
+        <img class="img-alt" src="images/miskant-chinski-puenktchen-2.jpg" alt="Miskant chiński 'Puenktchen' w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Miscanthus</div>
+      <h3 class="product-name">Miskant chiński 'Puenktchen'</h3>
+      <p class="product-latin">Miscanthus sinensis</p>
+      <p class="product-desc">Żółte, poziome cętki na szerokich, ciemnozielonych liściach — podobny efekt do 'Zebrinus', lecz wyrażony w formie plam, nie ciągłych pasów. Srebrzyste kłosy pojawiają się późnym latem.</p>
+      <div class="product-meta">
+        <span>↕ 120–160 cm</span>
+        <span>☀ słońce</span>
+        <span>Dostępne w doniczkach:🪴 5l, 3l</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- DRZEWKA -->
+<section id="drzewka">
+  <div class="section-header">
+    <div class="section-label">Kolekcja · 02</div>
+    <h2>
+      <img class="section-icon" src="images/tree-logo.svg" alt="Ikona drzewek ozdobnych" loading="lazy"
+           onerror="this.style.display='none';">
+      Drzewka ozdobne
+    </h2>
+    <p>Małe formy drzew i krzewów — idealne do mniejszych ogrodów, rabat akcentowych i nasadzeń kontenerowych.</p>
+  </div>
+
+  <div class="products">
+
+    <article class="product">
+      <div class="product-image">
+        <img class="img-main" src="images/hakuro-nishiki.jpg" alt="Wierzba 'Hakuro Nishiki'" loading="lazy"
+             onerror="imgFallback(this); void'images/hakuro-nishiki.svg';">
+        <img class="img-alt" src="images/hakuro-nishiki-2.jpg" alt="Wierzba 'Hakuro Nishiki' w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Acer palmatum</div>
+      <h3 class="product-name">Wierzba 'Hakuro Nishiki'</h3>
+      <p class="product-latin">Acer palmatum 'Hakuro Nishiki'</p>
+      <p class="product-desc">Głęboko purpurowe, wycinane liście przez cały sezon. Klasyka azjatyckich ogrodów w stylu zen.</p>
+      <div class="product-meta">
+        <span>↕ 300–500 cm</span>
+        <span>◐ półcień</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <img class="img-main" src="images/sosna-gorska.jpg" alt="Sosna górska 'Mops'" loading="lazy"
+             onerror="imgFallback(this); void'images/sosna-gorska.svg';">
+        <img class="img-alt" src="images/sosna-gorska-2.jpg" alt="Sosna górska w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Pinus mugo</div>
+      <h3 class="product-name">Sosna górska 'Mops'</h3>
+      <p class="product-latin">Pinus mugo 'Mops'</p>
+      <p class="product-desc">Karłowa, kulista forma sosny. Powolny wzrost, doskonała do skalniaków i pojemników.</p>
+      <div class="product-meta">
+        <span>↕ 80–120 cm</span>
+        <span>☀ słońce</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <img class="img-main" src="images/jalowiec.jpg" alt="Jałowiec 'Skyrocket'" loading="lazy"
+             onerror="imgFallback(this); void'images/jalowiec.svg';">
+        <img class="img-alt" src="images/jalowiec-2.jpg" alt="Jałowiec w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Juniperus</div>
+      <h3 class="product-name">Jałowiec 'Skyrocket'</h3>
+      <p class="product-latin">Juniperus scopulorum</p>
+      <p class="product-desc">Kolumnowa, wąska forma sięgająca 6 m. Świetny akcent wertykalny i element żywopłotów.</p>
+      <div class="product-meta">
+        <span>↕ 400–600 cm</span>
+        <span>☀ słońce</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <img class="img-main" src="images/wisnia-japonska.jpg" alt="Wiśnia japońska 'Kanzan'" loading="lazy"
+             onerror="imgFallback(this); void'images/wisnia-japonska.svg';">
+        <img class="img-alt" src="images/wisnia-japonska-2.jpg" alt="Wiśnia japońska w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Prunus</div>
+      <h3 class="product-name">Wiśnia japońska 'Kanzan'</h3>
+      <p class="product-latin">Prunus serrulata</p>
+      <p class="product-desc">Spektakularne, różowe, pełne kwiaty wiosną. Korona parasolowata, łatwa w pielęgnacji.</p>
+      <div class="product-meta">
+        <span>↕ 600–800 cm</span>
+        <span>☀ słońce</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <img class="img-main" src="images/swierk-serbski.jpg" alt="Świerk serbski 'Nana'" loading="lazy"
+             onerror="imgFallback(this); void'images/swierk-serbski.svg';">
+        <img class="img-alt" src="images/swierk-serbski-2.jpg" alt="Świerk serbski w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Picea</div>
+      <h3 class="product-name">Świerk serbski 'Nana'</h3>
+      <p class="product-latin">Picea omorika</p>
+      <p class="product-desc">Karłowy świerk o gęstej, kopulastej koronie. Igły dwukolorowe — ciemnozielone z srebrnym spodem.</p>
+      <div class="product-meta">
+        <span>↕ 100–200 cm</span>
+        <span>◐ półcień</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <span class="product-tag">Nowość</span>
+        <img class="img-main" src="images/milorzab.jpg" alt="Miłorząb 'Mariken'" loading="lazy"
+             onerror="imgFallback(this); void'images/milorzab.svg';">
+        <img class="img-alt" src="images/milorzab-2.jpg" alt="Miłorząb w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <div class="product-category">Ginkgo biloba</div>
+      <h3 class="product-name">Miłorząb dwuklapowy 'Mariken'</h3>
+      <p class="product-latin">Ginkgo biloba</p>
+      <p class="product-desc">Karłowa odmiana z efektownym, złocistym przebarwieniem jesienią. Roślina o reliktowej historii.</p>
+      <div class="product-meta">
+        <span>↕ 100–150 cm</span>
+        <span>☀ słońce</span>
+      </div>
+    </article>
+
+    <article class="product">
+      <div class="product-image">
+        <img class="img-main" src="images/katalpa.jpg" alt="Katalpa kulista 'Nana'" loading="lazy"
+             onerror="imgFallback(this)">
+        <img class="img-alt" src="images/katalpa-2.jpg" alt="Katalpa w doniczce" loading="lazy"
+             onload="this.closest('.product-image').classList.add('has-secondary');"
+             onerror="imgFallback(this)">
+        <div class="img-badge">1 / 2</div>
+      </div>
+      <h3 class="product-name">Katalpa kulista 'Nana'</h3>
+      <p class="product-latin">Catalpa bignonioides 'Nana'</p>
+      <p class="product-desc">Idealnie kulista korona zaszczepiona na pniu. Duże, sercowate liście dają gęsty cień. Klasyk parkowy w mniejszej skali.
+        Posiadamy sadzonki od 180 cm do 240 cm wysokości.
+      </p>
+      <div class="product-meta">
+        <span>↕ 180–240 cm</span>
+        <span>☀ słońce / ◐ półcień</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- INFO BAND -->
+<div class="info-band" id="info">
+  <div class="info-band-inner">
+    <div class="info-item">
+      <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 2 L 12 22 M 6 8 Q 12 2 18 8 M 4 14 Q 12 8 20 14"/>
+      </svg>
+      <h3>Polska hodowla</h3>
+      <p>Wszystkie rośliny pochodzą z naszej szkółki. Aklimatyzowane do polskich warunków, odporne na mrozy.</p>
+    </div>
+    <div class="info-item">
+      <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7 L 12 12 L 16 14"/>
+      </svg>
+      <h3>Lata doświadczenia</h3>
+      <p>Od 2018 roku zajmujemy się hodowlą i projektowaniem zieleni. Doradzimy najlepszy wybór do Twojego ogrodu.</p>
+    </div>
+    <div class="info-item">
+      <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 12 L 9 18 L 21 6"/>
+      </svg>
+      <h3>Gwarancja jakości</h3>
+      <p>Każdy okaz przed wysyłką jest sprawdzany. Zdrowy system korzeniowy i właściwy pokrój gwarantujemy.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>© 2026 Zielony Ogród · Wszystkie prawa zastrzeżone</p>
+    <p>Strona ekspozycyjna · katalog produktów</p>
+  </div>
+</footer>
+
+<script>
+  // Tap-to-toggle drugiego zdjęcia (głównie dla telefonów)
+  document.querySelectorAll('.product-image').forEach(el => {
+    el.addEventListener('click', () => {
+      if (el.classList.contains('has-secondary')) {
+        el.classList.toggle('active');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
