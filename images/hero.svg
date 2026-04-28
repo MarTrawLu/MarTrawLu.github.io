@@ -1,0 +1,28 @@
+<svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dde7d0"/>
+      <stop offset="100%" stop-color="#7a9268"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bg-grad)"/>
+  <g stroke="#3a5a2a" stroke-width="2" fill="none" opacity="0.7">
+    <path d="M50 500 Q 60 380 80 280"/>
+    <path d="M70 500 Q 75 360 95 250"/>
+    <path d="M100 500 Q 110 400 120 300"/>
+    <path d="M130 500 Q 140 370 155 270"/>
+    <path d="M170 500 Q 180 390 195 290"/>
+    <path d="M210 500 Q 220 360 235 260"/>
+    <path d="M250 500 Q 260 380 280 280"/>
+    <path d="M290 500 Q 300 370 320 270"/>
+    <path d="M330 500 Q 340 400 355 300"/>
+  </g>
+  <g stroke="#5a7a4a" stroke-width="1.5" fill="none" opacity="0.5">
+    <path d="M40 500 Q 45 400 55 320"/>
+    <path d="M85 500 Q 92 410 110 320"/>
+    <path d="M145 500 Q 155 420 175 330"/>
+    <path d="M215 500 Q 225 415 245 325"/>
+    <path d="M295 500 Q 308 410 328 320"/>
+  </g>
+  <circle cx="320" cy="100" r="40" fill="#fff" opacity="0.6"/>
+</svg>
